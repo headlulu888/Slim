@@ -39,18 +39,22 @@ $app->configureMode('test', function () use($app) {
     ]);
 });
 
-//echo $app->config(array(
-//    'debug' => TRUE,
-//    'templates.path' => "templates"
-//));
-
-echo "<pre>";
-echo $app->config('templates.path');
-echo "</pre>";
-
-$app->get('/article', function () use($app) {
-
-    echo 'World';
+$app->get('/article(/:name(/:id))', function ($name = 'ray', $id = 1) use($app) {
+    echo 'param = ' . $name . '|' . $id;
 });
+
+//$app->post('/add', function () {
+//    print_r($_POST);
+//    echo 'post';
+//});
+//
+//$app->put('/update', function () {
+//    print_r($_POST);
+//    echo 'put';
+//});
+//
+//$app->map('/create', function () {
+//    echo 'stream';
+//})->via("GET", "POST")->name('create');
 
 $app->run();
