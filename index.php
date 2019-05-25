@@ -40,26 +40,51 @@ $app->get('/article(/:name(/:id))', function ($name = 'ray', $id = 1) use($app) 
 
 // $app->get('/admin', $authAdmin, $getAdmin)->name('admin');
 
-$app->group('/admin', function () use($app){
-    $app->group('/message', function () use($app){
-        $app->get('/view/:id', function ($id) {
-            echo 'hello view'. $id;
-        });
+//$app->group('/admin', function () use($app){
+//    $app->group('/message', function () use($app){
+//        $app->get('/view/:id', function ($id) {
+//            echo 'hello view'. $id;
+//        });
+//
+//        $app->post('/add', function () use($app){
+//            print_r($_POST);
+//        });
+//    });
+//
+//    $app->group('/category', function () use($app) {
+//        $app->get('/view/:id', function ($id) use($app) {
+//            echo 'hello category '. $id;
+//        });
+//
+//        $app->post('/add', function () {
+//            print_r($_POST);
+//        });
+//    });
+//});
 
-        $app->post('/add', function () use($app){
-            print_r($_POST);
-        });
-    });
+$app->get('/helpers/:name', function ($name) use($app) {
+    echo 'hello ' . $name;
 
-    $app->group('/category', function () use($app) {
-        $app->get('/view/:id', function ($id) use($app) {
-            echo 'hello category '. $id;
-        });
+    // $app->halt(500, 'server error');
+    // $app->pass();
+    // $app->redirect($app->urlFor('page'), 301);
 
-        $app->post('/add', function () {
-            print_r($_POST);
-        });
-    });
+
+    $response = $app->response;
+    $response->setStatus(404);
+    $response->write('page not f');
+    $response->headers->set('Content-type', 'text/plain');
+
+    $array = $response->finalize();
+    print_r($array);
+
+    $app->stop();
+
+    echo ' world';
+});
+
+$app->get('/helpers/sergey', function () use($app) {
+    echo 'sergey';
 });
 
 $app->run();
