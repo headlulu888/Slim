@@ -24,14 +24,42 @@ $app->get('/article(/:name(/:id))', function ($name = 'ray', $id = 1) use($app) 
     'id' => '[a-zA-Z]{3,}'
 ]);
 
-$getAdmin = function () {
-    echo "Hello admin";
-};
+//$getAdmin = function () {
+//    echo "Hello admin";
+//};
+//
+//$authAdmin = function (\Slim\Route $route) use($app) {
+//    echo $route->getName();
+//};
 
-$authAdmin = function (\Slim\Route $route) use($app) {
-    echo $route->getName();
-};
+// admin/message/view/:id
+// admin/message/add
 
-$app->get('/admin', $authAdmin, $getAdmin)->name('admin');
+// admin/category/view/:id
+// admin/category/add
+
+// $app->get('/admin', $authAdmin, $getAdmin)->name('admin');
+
+$app->group('/admin', function () use($app){
+    $app->group('/message', function () use($app){
+        $app->get('/view/:id', function ($id) {
+            echo 'hello view'. $id;
+        });
+
+        $app->post('/add', function () use($app){
+            print_r($_POST);
+        });
+    });
+
+    $app->group('/category', function () use($app) {
+        $app->get('/view/:id', function ($id) use($app) {
+            echo 'hello category '. $id;
+        });
+
+        $app->post('/add', function () {
+            print_r($_POST);
+        });
+    });
+});
 
 $app->run();
