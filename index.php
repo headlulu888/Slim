@@ -12,8 +12,25 @@ require_once "vendor/autoload.php";
 
 $app = new Slim\Slim([
     'templates.path' => __DIR__ . '/templates',
-    'view' => new Customview()
+//    'view' => new Customview()
 ]);
+
+// Get container
+$container = $app->getContainer();
+
+// Register component on container
+$container['view'] = function ($container) {
+    $view = new \Slim\Views\Twig('path/to/templates', [
+        'cache' => 'path/to/cache'
+    ]);
+
+    // Instantiate and add Slim specific extension
+    $router = $container->get('router');
+    $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
+    $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
+
+    return $view;
+};
 
 $app->get('/article(/:name(/:id))', function ($name = 'ray', $id = 1) use($app) {
     $list = ['alex', 'bob', 'frank'];
