@@ -10,19 +10,22 @@ require_once "vendor/autoload.php";
     ]
 );
 
-$app = new Slim\Slim();
+$app = new Slim\Slim([
+    'templates.path' => __DIR__ . '/templates',
+    'view' => new Customview()
+]);
 
 $app->get('/article(/:name(/:id))', function ($name = 'ray', $id = 1) use($app) {
-    echo 'param = ' . $name . '|' . $id;
-    $link = $app->urlFor('page', [
-        'id' => '50',
-        'name' => 'Sergey'
-    ]);
-    echo "<p><a href='" . $link . "'>URL</a></p>";
+    $list = ['alex', 'bob', 'frank'];
 
-})->name('page')->conditions([
-    'id' => '[a-zA-Z]{3,}'
-]);
+    $app->render('index2.tpl.php', [
+        'title' => 'Шаблон',
+        'list' => $list,
+        'link' => $app->urlFor('page', [
+            'id' => 56
+        ])
+    ]);
+})->name('page');
 
 //$getAdmin = function () {
 //    echo "Hello admin";
